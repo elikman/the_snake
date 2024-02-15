@@ -58,11 +58,13 @@ class Apple(GameObject):
         super().__init__(position, APPLE_COLOR)
 
     def draw(self, surface):
+        """Отрисовка яблока на игровом поле."""
         rect = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(surface, self.body_color, rect)
         pygame.draw.rect(surface, BORDER_COLOR, rect, 1)
 
     def randomize_position(self):
+        """Рандомизация позиции яблока."""
         self.position = (randint(0, GRID_WIDTH - 1) * GRID_SIZE,
                          randint(0, GRID_HEIGHT - 1) * GRID_SIZE)
 
@@ -107,8 +109,10 @@ class Snake(GameObject):
     def move(self):
         """Метод обновления положения змейки."""
         head_position = self.get_head_position()
-        new_head_position = (head_position[0] + self.direction[0] * GRID_SIZE,
-                             head_position[1] + self.direction[1] * GRID_SIZE)
+        new_head_position = (
+            head_position[0] + self.direction[0] * GRID_SIZE,
+            head_position[1] + self.direction[1] * GRID_SIZE
+        )
 
         # Проверка на столкновение со стеной или с самой собой
         if (not (0 <= new_head_position[0] < SCREEN_WIDTH and
