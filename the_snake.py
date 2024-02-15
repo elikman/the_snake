@@ -1,5 +1,4 @@
 from random import choice, randint
-
 import pygame
 
 # Инициализация PyGame:
@@ -20,13 +19,13 @@ RIGHT = (1, 0)
 # Цвет фона - черный:
 BOARD_BACKGROUND_COLOR = (0, 0, 0)
 
-# Цвет границы ячейки
+# Цвет границы ячейки:
 BORDER_COLOR = (93, 216, 228)
 
-# Цвет яблока
+# Цвет яблока:
 APPLE_COLOR = (255, 0, 0)
 
-# Цвет змейки
+# Цвет змейки:
 SNAKE_COLOR = (0, 255, 0)
 
 # Скорость движения змейки:
@@ -60,8 +59,7 @@ class Apple(GameObject):
 
     def draw(self, surface):
         """Отрисовка яблока на игровом поле."""
-        rect = pygame.Rect(
-            (self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
+        rect = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(surface, self.body_color, rect)
         pygame.draw.rect(surface, BORDER_COLOR, rect, 1)
 
