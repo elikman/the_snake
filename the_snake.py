@@ -1,4 +1,5 @@
 from random import choice, randint
+
 import pygame
 
 # Инициализация PyGame:
@@ -19,13 +20,13 @@ RIGHT = (1, 0)
 # Цвет фона - черный:
 BOARD_BACKGROUND_COLOR = (0, 0, 0)
 
-# Цвет границы ячейки:
+# Цвет границы ячейки
 BORDER_COLOR = (93, 216, 228)
 
-# Цвет яблока:
+# Цвет яблока
 APPLE_COLOR = (255, 0, 0)
 
-# Цвет змейки:
+# Цвет змейки
 SNAKE_COLOR = (0, 255, 0)
 
 # Скорость движения змейки:
@@ -56,10 +57,11 @@ class Apple(GameObject):
 
     def __init__(self, position):
         super().__init__(position, APPLE_COLOR)
-
+        
     def draw(self, surface):
         """Отрисовка яблока на игровом поле."""
-        rect = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
+        rect = pygame.Rect(
+            (self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(surface, self.body_color, rect)
         pygame.draw.rect(surface, BORDER_COLOR, rect, 1)
 
@@ -109,16 +111,14 @@ class Snake(GameObject):
     def move(self):
         """Метод обновления положения змейки."""
         head_position = self.get_head_position()
-        x_offset = self.direction[0] * GRID_SIZE
-        y_offset = self.direction[1] * GRID_SIZE
-        new_head_position = (head_position[0] + x_offset,
-                             head_position[1] + y_offset)
+        new_head_position = (
+            head_position[0] + self.direction[0] * GRID_SIZE,
+            head_position[1] + self.direction[1] * GRID_SIZE
+        )
 
         # Проверка на столкновение со стеной или с самой собой
-        if (new_head_position[0] >= SCREEN_WIDTH or
-                new_head_position[0] < 0 or
-                new_head_position[1] >= SCREEN_HEIGHT or
-                new_head_position[1] < 0 or
+        if (not (0 <= new_head_position[0] < SCREEN_WIDTH and
+                 0 <= new_head_position[1] < SCREEN_HEIGHT) or
                 new_head_position in self.positions[2:]):
             self.reset()
             return
