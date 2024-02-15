@@ -115,8 +115,10 @@ class Snake(GameObject):
                              head_position[1] + y_offset)
 
         # Проверка на столкновение со стеной или с самой собой
-        if (new_head_position[0] >= SCREEN_WIDTH or new_head_position[0] < 0 or
-                new_head_position[1] >= SCREEN_HEIGHT or new_head_position[1] < 0 or
+        if (new_head_position[0] >= SCREEN_WIDTH or
+                new_head_position[0] < 0 or
+                new_head_position[1] >= SCREEN_HEIGHT or
+                new_head_position[1] < 0 or
                 new_head_position in self.positions[2:]):
             self.reset()
             return
