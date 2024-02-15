@@ -109,14 +109,16 @@ class Snake(GameObject):
     def move(self):
         """Метод обновления положения змейки."""
         head_position = self.get_head_position()
-        new_head_position = (
-            head_position[0] + self.direction[0] * GRID_SIZE,
-            head_position[1] + self.direction[1] * GRID_SIZE
-        )
+        x_offset = self.direction[0] * GRID_SIZE
+        y_offset = self.direction[1] * GRID_SIZE
+        new_head_position = (head_position[0] + x_offset,
+                             head_position[1] + y_offset)
 
         # Проверка на столкновение со стеной или с самой собой
-        if (not (0 <= new_head_position[0] < SCREEN_WIDTH) or
-                not (0 <= new_head_position[1] < SCREEN_HEIGHT) or
+        if (new_head_position[0] >= SCREEN_WIDTH or
+                new_head_position[0] < 0 or
+                new_head_position[1] >= SCREEN_HEIGHT or
+                new_head_position[1] < 0 or
                 new_head_position in self.positions[2:]):
             self.reset()
             return
