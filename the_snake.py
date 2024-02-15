@@ -60,7 +60,8 @@ class Apple(GameObject):
 
     def draw(self, surface):
         """Отрисовка яблока на игровом поле."""
-        rect = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
+        rect = pygame.Rect((self.position[0], self.position[1]), 
+                           (GRID_SIZE, GRID_SIZE))
 
     def randomize_position(self):
         """Рандомизация позиции яблока."""
