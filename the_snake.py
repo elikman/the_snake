@@ -82,6 +82,22 @@ class Snake(GameObject):
         self.next_direction = None
         self.last = None
 
+    def handle_keys(self):
+        """Метод обработки нажатий клавиш."""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP and self.direction != DOWN:
+                    self.next_direction = UP
+                elif event.key == pygame.K_DOWN and self.direction != UP:
+                    self.next_direction = DOWN
+                elif event.key == pygame.K_LEFT and self.direction != RIGHT:
+                    self.next_direction = LEFT
+                elif event.key == pygame.K_RIGHT and self.direction != LEFT:
+                    self.next_direction = RIGHT
+
     def update_direction(self):
         """Метод обновления направления змейки."""
         if self.next_direction:
@@ -107,26 +123,6 @@ class Snake(GameObject):
             self.reset()
             return
 
-        def handle_keys(self):
-            """Метод обработки нажатий клавиш."""
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    raise SystemExit
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP and \
-                        self.direction != DOWN:
-                        self.next_direction = UP
-                    elif event.key == pygame.K_DOWN and \
-                        self.direction != UP:
-                        self.next_direction = DOWN
-                    elif event.key == pygame.K_LEFT and \
-                        self.direction != RIGHT:
-                        self.next_direction = LEFT
-                    elif event.key == pygame.K_RIGHT and \
-                        self.direction != LEFT:
-                        self.next_direction = RIGHT
-        
         # Обновление позиции головы
         self.positions.insert(0, new_head_position)
 
@@ -181,29 +177,7 @@ def main():
         if snake.get_head_position() == apple.position:
             apple.randomize_position()
             snake.length += 1
-            
-         def handle_keys(self):
-            """Метод обработки нажатий клавиш."""
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    raise SystemExit
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP and \
-                        self.direction != DOWN:
-                        self.next_direction = UP
-                    elif event.key == pygame.K_DOWN and \
-                        self.direction != UP:
-                        self.next_direction = DOWN
-                    elif event.key == pygame.K_LEFT and \
-                        self.direction != RIGHT:
-                        self.next_direction = LEFT
-                    elif event.key == pygame.K_RIGHT and \
-                        self.direction != LEFT:
-                        self.next_direction = RIGHT
 
-
-        
         # Отрисовка на экране
         screen.fill(BOARD_BACKGROUND_COLOR)
         draw_grid(screen)
