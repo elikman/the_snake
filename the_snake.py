@@ -57,7 +57,7 @@ class Apple(GameObject):
 
     def __init__(self, position):
         super().__init__(position, APPLE_COLOR)
-        
+
     def draw(self, surface):
         """Отрисовка яблока на игровом поле."""
         rect = pygame.Rect(
@@ -118,8 +118,8 @@ class Snake(GameObject):
 
         # Проверка на столкновение со стеной или с самой собой
         if (not (0 <= new_head_position[0] < SCREEN_WIDTH 
-             and 0 <= new_head_position[1] < SCREEN_HEIGHT) 
-        or new_head_position in self.positions[2:]):
+                 and 0 <= new_head_position[1] < SCREEN_HEIGHT) 
+            or new_head_position in self.positions[2:]):
             self.reset()
             return
 
