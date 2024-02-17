@@ -162,7 +162,7 @@ def main():
             apple.randomize_position()
             snake.length += 1
             
-        def handle_keys(self):
+         def handle_keys(self):
             """Метод обработки нажатий клавиш."""
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -181,6 +181,7 @@ def main():
                     elif event.key == pygame.K_RIGHT and \
                         self.direction != LEFT:
                         self.next_direction = RIGHT
+
 
         
         # Отрисовка на экране
