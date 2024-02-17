@@ -183,6 +183,7 @@ def main():
         draw_grid(screen)
         apple.draw(screen)
         snake.draw(screen)
+        handle_keys()
         pygame.display.update()
 
 
