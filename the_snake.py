@@ -43,6 +43,7 @@ pygame.display.set_caption('Змейка')
 # Настройка времени:
 clock = pygame.time.Clock()
 
+
 def handle_keys(self):
     """Метод обработки нажатий клавиш."""
     for event in pygame.event.get():
