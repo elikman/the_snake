@@ -86,6 +86,23 @@ class Snake(GameObject):
         self.next_direction = None
         self.last = None
 
+
+def handle_keys(self):
+    """Метод обработки нажатий клавиш."""
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            raise SystemExit
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP and self.direction != DOWN:
+                self.next_direction = UP
+            elif event.key == pygame.K_DOWN and self.direction != UP:
+                self.next_direction = DOWN
+            elif event.key == pygame.K_LEFT and self.direction != RIGHT:
+                self.next_direction = LEFT
+            elif event.key == pygame.K_RIGHT and self.direction != LEFT:
+                self.next_direction = RIGHT
+
     def update_direction(self):
         """Метод обновления направления змейки."""
         if self.next_direction:
@@ -145,21 +162,6 @@ def draw_grid(screen):
     for y in range(0, SCREEN_HEIGHT, GRID_SIZE):
         pygame.draw.line(screen, GRID_COLOR, (0, y), (SCREEN_WIDTH, y))
 
-def handle_keys(self):
-    """Метод обработки нажатий клавиш."""
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            raise SystemExit
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP and self.direction != DOWN:
-                self.next_direction = UP
-            elif event.key == pygame.K_DOWN and self.direction != UP:
-                self.next_direction = DOWN
-            elif event.key == pygame.K_LEFT and self.direction != RIGHT:
-                self.next_direction = LEFT
-            elif event.key == pygame.K_RIGHT and self.direction != LEFT:
-                self.next_direction = RIGHT
 
 def main():
     """Основная функция игры."""
