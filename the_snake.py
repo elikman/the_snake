@@ -170,17 +170,18 @@ def main():
                     raise SystemExit
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP 
-                    and self.direction != DOWN:
+                        and self.direction != DOWN:
                         self.next_direction = UP
                     elif event.key == pygame.K_DOWN 
-                and self.direction != UP:
+                        and self.direction != UP:
                         self.next_direction = DOWN
                     elif event.key == pygame.K_LEFT 
-                and self.direction != RIGHT:
+                        and self.direction != RIGHT:
                         self.next_direction = LEFT
-                    elif event.key == pygame.K_RIGHT 
-            and self.direction != LEFT:
+                    elif event.key == pygame.K_RIGHT
+                        and self.direction != LEFT:
                         self.next_direction = RIGHT
+
         
         # Отрисовка на экране
         screen.fill(BOARD_BACKGROUND_COLOR)
