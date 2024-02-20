@@ -10,6 +10,7 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
 GRID_WIDTH = SCREEN_WIDTH // GRID_SIZE
 GRID_HEIGHT = SCREEN_HEIGHT // GRID_SIZE
+POSITION = (0, 0)
 
 # Направления движения:
 UP = (0, -1)
@@ -64,7 +65,7 @@ def handle_keys(self):
 class GameObject:
     """Базовый класс для игровых объектов."""
 
-    def __init__(self, position=(0, 0), body_color='green'):
+    def __init__(self, position=POSITION, body_color=SNAKE_COLOR):
         self.position = position
         self.body_color = body_color
 
@@ -78,18 +79,23 @@ class GameObject:
 class Apple(GameObject):
     """Класс для представления яблока."""
 
-    def __init__(self, position=(0, 0)):
+    def __init__(self, position=POSITION):
         super().__init__(position, APPLE_COLOR)
 
-    def randomize_position(self, snake_positions):
+    def randomize_position(self, snake_positions, grid_width, grid_height,
+                           grid_size):
         """Рандомизация позиции яблока с учетом занятых позиций змейки."""
-        free_positions = [(x * GRID_SIZE, y * GRID_SIZE)
-                          for x in range(GRID_WIDTH)
-                          for y in range(GRID_HEIGHT)
-                          if (x * GRID_SIZE, y * GRID_SIZE)
-                          not in snake_positions]
-        if not free_positions:
+        total_positions = grid_width * grid_height
+        snake_length = len(snake_positions)
+        if snake_length >= total_positions:
             raise ValueError("Нет свободных позиций для размещения яблока.")
+        # Создаем список всех возможных позиций
+        all_positions = [(x * grid_size, y * grid_size)
+                         for x in range(grid_width) for y in range(grid_height)
+                         ]
+        # Отфильтровываем занятые позиции змейкой
+        free_positions = [pos for pos in all_positions
+                          if pos not in snake_positions]
         self.position = choice(free_positions)
 
 
@@ -113,8 +119,7 @@ class Snake(GameObject):
 
     def move(self):
         """Метод обновления положения змейки."""
-        head_position = self.get_head_position()
-        x, y = head_position
+        x, y = self.get_head_position()
         dx, dy = self.direction
 
         # Новая позиция головы с учетом направления движения
@@ -122,9 +127,8 @@ class Snake(GameObject):
                              (y + dy * GRID_SIZE) % SCREEN_HEIGHT)
 
         # Проверка на столкновение с самой собой
-        if new_head_position in self.positions[1:]:
-            self.reset()
-            return
+        if len(self.positions) > self.length:
+            self.last = self.positions.pop()
 
         # Обновление позиции головы
         self.positions.insert(0, new_head_position)
@@ -143,18 +147,20 @@ class Snake(GameObject):
 
     def draw(self, surface):
         """Метод отрисовки змейки на игровом поле."""
-        for position in self.positions:
+        # Отрисовка головы змейки
+        head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(surface, self.body_color, head_rect)
+        pygame.draw.rect(surface, BORDER_COLOR, head_rect, 1)
+
+        # Затирание последнего сегмента хвоста, если змейка не выросла
+        if self.last:
+            last_rect = pygame.Rect(self.last, (GRID_SIZE, GRID_SIZE))
+            pygame.draw.rect(surface, BOARD_BACKGROUND_COLOR, last_rect)
+
+        for position in self.positions[1:]:
             segment_rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(surface, self.body_color, segment_rect)
             pygame.draw.rect(surface, BORDER_COLOR, segment_rect, 1)
-
-        if self.last:
-            last_rect = pygame.Rect(self.last, (GRID_SIZE, GRID_SIZE))
-            pygame.draw.rect(surface, BOARD_BACKGROUND_COLOR, last_rect)
-
-        if self.last:
-            last_rect = pygame.Rect(self.last, (GRID_SIZE, GRID_SIZE))
-            pygame.draw.rect(surface, BOARD_BACKGROUND_COLOR, last_rect)
 
 
 def draw_grid(screen):
@@ -180,9 +186,12 @@ def main():
         snake.update_direction()
         snake.move()
 
+        if snake.get_head_position() in snake.positions[1:]:
+            snake.reset()
         # Проверка столкновений и рост змейки
         if snake.get_head_position() == apple.position:
-            apple.randomize_position(snake.positions)  # Теперь вызов корректен
+            apple.randomize_position(snake.positions, GRID_WIDTH, GRID_HEIGHT,
+                                     GRID_SIZE)
             snake.length += 1
 
         # Отрисовка на экране
