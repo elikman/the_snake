@@ -1,4 +1,4 @@
-import random
+iimport random
 
 import pygame
 
@@ -31,7 +31,7 @@ APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
 
 # Скорость движения змейки:
-SPEED = 20
+SPEED = 5
 
 GRID_COLOR = (100, 100, 100)
 
@@ -65,7 +65,7 @@ def handle_keys(self):
 class GameObject:
     """Базовый класс для игровых объектов."""
 
-    def __init__(self, position=(0, 0), body_color=(255, 255, 255)):
+    def __init__(self, position=POSITION, body_color=SNAKE_COLOR):
         self.position = position
         self.body_color = body_color
 
@@ -144,20 +144,17 @@ class Snake(GameObject):
 
     def draw(self, surface):
         """Метод отрисовки змейки на игровом поле."""
-        # Отрисовка головы змейки
-        head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(surface, self.body_color, head_rect)
-        pygame.draw.rect(surface, BORDER_COLOR, head_rect, 1)
+        for position in self.positions[:-1]:
+            self.position = position
+            super().draw(surface)
 
-        # Затирание последнего сегмента хвоста, если змейка не выросла
+        if self.positions:
+            self.position = self.positions[-1]
+            super().draw(surface)
+
         if self.last:
             last_rect = pygame.Rect(self.last, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(surface, BOARD_BACKGROUND_COLOR, last_rect)
-
-        # Отрисовка нового сегмента змейки
-        segment_rect = pygame.Rect(self.positions[-1], (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(surface, self.body_color, segment_rect)
-        pygame.draw.rect(surface, BORDER_COLOR, segment_rect, 1)
 
 
 def draw_grid(screen):
